@@ -3,7 +3,6 @@ from django.utils.html import mark_safe
 from django.utils import timezone
 
 class Portfolio(models.Model):
-    uid = models.URLField()
     name = models.CharField(max_length=255)
     description = models.TextField()
     image = models.ImageField(upload_to="thumbnail/img/portfolios/")
@@ -50,7 +49,7 @@ class AboutSection(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class AboutDetail(models.Model):
@@ -74,7 +73,6 @@ class AboutDetail(models.Model):
 class FactSection(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    detail = models.ManyToManyField("FactDetail")
     created_at = models.DateTimeField(default=timezone.now, editable=False)
     updated_at = models.DateTimeField(default=timezone.now)
 
@@ -90,26 +88,6 @@ class FactSection(models.Model):
     def __str__(self):
         return self.title
 
-
-class FactDetail(models.Model):
-    title = models.CharField(max_length=255)
-    subtitle = models.CharField(max_length=255)
-    rate = models.IntegerField(max_length=255)
-    icon = models.CharField(max_length=255)
-    created_at = models.DateTimeField(default=timezone.now, editable=False)
-    updated_at = models.DateTimeField(default=timezone.now)
-
-    class Meta:
-        ordering = ["-updated_at", "-created_at"]
-
-
-    def save(self, *args, **kwargs):
-        # Update the updated_at field whenever the object is saved
-        self.updated_at = timezone.now()
-        return super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.title
 
 class SkillSection(models.Model):
     title = models.CharField(max_length=255)
@@ -229,13 +207,10 @@ class PortfolioSection(models.Model):
 
 
 class PortfolioDetail(models.Model):
+    category = models.ManyToManyField("PortfolioCategory")
     title = models.CharField(max_length=255)
-    subtitle = models.CharField(max_length=255)
-    category = models.CharField(max_length=255)
-    client = models.CharField(max_length=255)
-    project_date = models.DateTimeField(default=timezone.now)
-    project_url = models.URLField()
-    image = models.ImageField(upload_to="thumbnail/img/portfolios/portfolio/")
+    fields = models.ManyToManyField("PortfolioDetailList")
+    images = models.ManyToManyField("PortfolioGallery")
     description = models.TextField()
     created_at = models.DateTimeField(default=timezone.now, editable=False)
     updated_at = models.DateTimeField(default=timezone.now)
@@ -251,7 +226,61 @@ class PortfolioDetail(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
+class PortfolioCategory(models.Model):
+    title = models.CharField(max_length=255)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    updated_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["-updated_at", "-created_at"]
+
+
+    def save(self, *args, **kwargs):
+        # Update the updated_at field whenever the object is saved
+        self.updated_at = timezone.now()
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+
+
+class PortfolioDetailList(models.Model):
+    title = models.CharField(max_length=255)
+    subtitle = models.CharField(max_length=255)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    updated_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["-updated_at", "-created_at"]
+
+
+    def save(self, *args, **kwargs):
+        # Update the updated_at field whenever the object is saved
+        self.updated_at = timezone.now()
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+
+class PortfolioGallery(models.Model):
+    image = models.ImageField(upload_to="thumbnail/img/portfolios/portfolio/")
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    updated_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["-updated_at", "-created_at"]
+
+
+    def save(self, *args, **kwargs):
+        # Update the updated_at field whenever the object is saved
+        self.updated_at = timezone.now()
+        return super().save(*args, **kwargs)
+
+
 
 class SocialLink(models.Model):
     icon = models.CharField(max_length=255)
@@ -269,4 +298,4 @@ class SocialLink(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.icon

@@ -3,6 +3,20 @@
 {% block body %}
 {% load static %}
 
+  <!-- ======= Mobile nav toggle button ======= -->
+  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="d-flex flex-column">
+      <nav id="navbar" class="nav-menu navbar">
+        <ul>
+          <li><a href="javascript:history.back()" class="nav-link scrollto active"><i class="bx bx-exit"></i> <span>Exit</span></a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+    </div>
+  </header><!-- End Header -->
+
 
   <main id="main">
 
@@ -11,9 +25,9 @@
       <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-          <h2>Portfoio Details</h2>
+          <h2>{{ detail.title }}</h2>
           <ol>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="javascript:history.back()">Home</a></li>
             <li>Portfoio Details</li>
           </ol>
         </div>
@@ -30,19 +44,11 @@
           <div class="col-lg-8">
             <div class="portfolio-details-slider swiper">
               <div class="swiper-wrapper align-items-center">
-
+                {% for image in detail.images.all %}
                 <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-details-1.jpg" alt="">
+                  <img src="{{ image.image.url }}" alt="">
                 </div>
-
-                <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-details-2.jpg" alt="">
-                </div>
-
-                <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-details-3.jpg" alt="">
-                </div>
-
+                {% endfor %}
               </div>
               <div class="swiper-pagination"></div>
             </div>
@@ -52,16 +58,21 @@
             <div class="portfolio-info">
               <h3>Project information</h3>
               <ul>
-                <li><strong>Category</strong>: Web design</li>
-                <li><strong>Client</strong>: ASU Company</li>
-                <li><strong>Project date</strong>: 01 March, 2020</li>
-                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
-              </ul>
+                {% for field in detail.fields.all %}
+                  {% if field.subtitle %}
+                    {% if field.subtitle|urlize == field.subtitle %}
+                      <li><strong>Project URL</strong>: <a href="{{ field.subtitle }}" target="_blank">{{ field.subtitle }}</a></li>
+                    {% else %}
+                      <li><strong>Subtitle</strong>: {{ field.subtitle }}</li>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </ul>              
             </div>
             <div class="portfolio-description">
-              <h2>This is an example of portfolio detail</h2>
+              <h2>Description</h2>
               <p>
-                Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia. Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt eius.
+                {{ detail.description }}
               </p>
             </div>
           </div>
@@ -72,21 +83,5 @@
     </section><!-- End Portfolio Details Section -->
 
   </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer">
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>iPortfolio</span></strong>
-      </div>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/ -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
-  </footer><!-- End  Footer -->
 
   {% endblock body %}

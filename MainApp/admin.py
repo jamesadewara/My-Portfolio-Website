@@ -1,10 +1,12 @@
 from django.contrib import admin
-from .models import Portfolio, PortfolioDetail, PortfolioSection, FactDetail, AboutDetail, SkillDetail, ResumeDetail, ResumeDetailList, FactSection, SkillSection, AboutSection, ResumeSection, SocialLink
+from .models import Portfolio, PortfolioDetail, PortfolioSection, AboutDetail, SkillDetail, ResumeDetail, ResumeDetailList, FactSection, SkillSection, AboutSection, ResumeSection, SocialLink, PortfolioGallery, PortfolioDetailList, PortfolioCategory
 
 admin.site.register(Portfolio)
 admin.site.register(PortfolioDetail)
+admin.site.register(PortfolioDetailList)
 admin.site.register(PortfolioSection)
-admin.site.register(FactDetail)
+admin.site.register(PortfolioGallery)
+admin.site.register(PortfolioCategory)
 admin.site.register(AboutDetail)
 admin.site.register(SkillDetail)
 admin.site.register(ResumeDetail)
