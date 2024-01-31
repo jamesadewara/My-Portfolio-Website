@@ -6,6 +6,7 @@ class Portfolio(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     image = models.ImageField(upload_to="thumbnail/img/portfolios/")
+    hero_image = models.ImageField(upload_to="thumbnail/img/portfolios/hero/")
     social_links = models.ManyToManyField("SocialLink")
     about = models.ForeignKey("AboutSection", on_delete = models.CASCADE)
     facts = models.ForeignKey("FactSection", on_delete = models.CASCADE)
@@ -207,7 +208,7 @@ class PortfolioSection(models.Model):
 
 
 class PortfolioDetail(models.Model):
-    category = models.ManyToManyField("PortfolioCategory")
+    category = models.ForeignKey("PortfolioCategory", on_delete = models.CASCADE)
     title = models.CharField(max_length=255)
     fields = models.ManyToManyField("PortfolioDetailList")
     images = models.ManyToManyField("PortfolioGallery")
@@ -284,7 +285,7 @@ class PortfolioGallery(models.Model):
 
 class SocialLink(models.Model):
     icon = models.CharField(max_length=255)
-    url = models.URLField()
+    url = models.CharField(max_length=255)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
     updated_at = models.DateTimeField(default=timezone.now)
 
